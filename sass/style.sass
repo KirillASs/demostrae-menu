@@ -5,13 +5,21 @@
 body
     padding: 0
     margin: 0
-a
-    text-decoration: none
-    font-size: 14px
     font-family: 'Montserratt' 
     font-style: normal
     font-weight: 500
     color: #333333
+p
+    margin: 0
+h2
+    margin: 0
+a
+    text-decoration: none
+    font-size: 14px
+    &:active
+        color: #333333
+    &:visited
+        color: #333333
 ul
     list-style-type: none
     padding: 0
@@ -49,6 +57,7 @@ ul
                         margin: 0 5px 0 10px
                         .menu__link
                             padding: 20px 10px 20px 5px
+                            transition: all 0.2s
                             &::after
                                 content: url("../img/Vector.svg")
                                 padding-left: 10px
@@ -73,18 +82,60 @@ ul
                                 .sub__link
                                     font-size: 16px
                                     padding: 8px 0
+                                    transition: all 0.2s 
+                                    &:hover
+                                        color: #014E38
                         &:hover .sub__body
                             display: block
                             opacity: 1
                             pointer-events: all
+                        &:hover .menu__link
+                            color: #014E38
 
     .content
         max-width: 1230px
         width: 100%
-        height: 700px
         margin-top: 115px
-        border-left: 2px solid #333
-        border-right: 2px solid #333
+        .first-block
+            display: flex
+            flex-direction: column
+            width: 100%
+            margin-top: 52px
+            .first-block__text
+                display: flex
+                width: 100%
+                .first-block__left, .first-block__right
+                    width: 50%
+                    border-right: 1px solid #D9D9D9
+                    h2
+                        font-size: 40px
+                        line-height: 52px
+                        color: #014E38
+                        margin-left: 24px
+                    p
+                        font-size: 20px
+                        line-height: 26px
+                        color: #014E38
+                        padding: 0 24px
+                .first-block__left
+                    border-left: 1px solid #D9D9D9
+                .first-block__right
+                    display: flex
+                    align-items: center
+                    justify-content: center
+            .first-block__img
+                margin-top: 32px
+                img
+                    width: 100%
+        .news
+            margin-top: 80px
+            width: 100%
+            .news__header
+                padding-bottom: 16px
+                margin: 80px
+                border-bottom: 1px solid #D9D9D9
+                font-size: 32px
+                color: #014E38
 
     .footer
         width: 100%
