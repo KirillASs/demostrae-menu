@@ -5,6 +5,16 @@
 $green-color: #014E38
 $white-color: #fff
 
+$maxWidth: 1920
+@mixin adaptiv-font($pcSize, $mobSize)
+    $addSize: $pcSize - $mobSize
+    $addMobSize: $addSize + $addSize * 0.7
+    @media screen and (max-width: 767px)
+        font-size: calc(#{$mobSize + px} + #{$addMobSize} * ((100vw - 320px) / #{$maxWidth}))
+    @media screen and (min-width: 767px)
+        font-size: calc(#{$mobSize + px} + #{$addSize} * (100vw / #{$maxWidth}))
+
+
 body
     padding: 0
     margin: 0
@@ -16,15 +26,14 @@ p
     margin: 0
 h2
     margin: 0
-    font-size: 40px
+    @include adaptiv-font(40, 28)
 h3
     margin: 0
-    font-size: 32px
+    @include adaptiv-font(32, 28)
 h4
     margin: 0
 a
     text-decoration: none
-    font-size: 20px
     &:active
         color: #333333
     &:visited
@@ -36,6 +45,7 @@ button
     color: inherit
     background-color: transparent
     cursor: pointer
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 ul
     list-style-type: none
     padding: 0
@@ -63,6 +73,10 @@ ul
             width: 100vw
             height: 100vh
             z-index: 10
+            transition: .5s
+        .overlay-active
+            display: block
+            background-color: rgba(0, 0, 0, 0.5)
         .header-container
             display: flex
             align-items: center
@@ -87,42 +101,47 @@ ul
                         .menu__link
                             padding: 20px 10px 20px 5px
                             display: flex
+                            align-items: center
+                            @include adaptiv-font(18, 14)
                             transition: all 0.2s
                             &:last-child
                                 padding-right: 0
                                 margin: 20px
-                            &::after
-                                content: url("../img/menu_vector.svg")
-                                padding-left: 9px
+                            .arrow-container
+                                display: inherit
+                                margin-left: 10px
+                                img
+                                    transition: .1s
+                            // &::after
+                            //     content: url("../img/menu_vector.svg")
+                            //     padding-left: 9px
                         .sub__body
                             display: none
                             opacity: 0
                             position: absolute
                             top: 100%
-                            width: 172px
+                            width: 200px
                             padding: 0 24px
-                            background: $white-color
+                            background-color: #FFFBF3
                             box-shadow: -2px 4px 6px rgba(0, 0, 0, 0.25)
                             border-top: 1px solid #D9D9D9
                             pointer-events: none
                             .sub__item
                                 border-bottom: 1px solid #D9D9D9
-                                padding: 8px 0
                                 &:last-child
                                     border: none
                                     margin-bottom: 16px
                                 .sub__link
+                                    display: flex
                                     font-size: 16px
                                     padding: 8px 0
                                     transition: all 0.2s 
+                                    width: 100%
                                     &:hover
                                         color: $green-color
-                        &:hover .sub__body
+                        .show
                             display: block
                             opacity: 1
-                            pointer-events: all
-                        &:hover .menu__link
-                            color: $green-color
         .menu-burger
             position: relative
             z-index: 100
@@ -170,7 +189,6 @@ ul
                     width: 50%
                     border-right: 1px solid #D9D9D9
                     h2
-                        font-size: 40px
                         line-height: 52px
                         color: $green-color
                         margin-left: 24px
@@ -199,8 +217,9 @@ ul
                 padding-bottom: 16px
                 margin-bottom: 32px
                 border-bottom: 1px solid #D9D9D9
-                font-size: 32px
                 color: $green-color
+                .all-news
+                    @include adaptiv-font(20, 16)
             .news-body
                 display: flex
                 flex-direction: column
@@ -224,10 +243,13 @@ ul
                 .news-bottom
                     display: flex
                     justify-content: end
+                    position: relative
                     .news__button
                         display: flex
                         justify-content: center
                         align-items: center
+                        position: absolute
+                        bottom: 40px
                         width: 91px
                         height: 32px
                         background: $green-color
@@ -298,28 +320,99 @@ ul
                 margin-top: 24px
                 border-top: 1px solid #D9D9D9
 
+@media (max-width: 1439px)     
+    .main 
+        .content 
+            .news 
+                .news-body 
+                    .news-bottom 
+                        .news__button
+                            position: relative
+                            bottom: 0
+
 @media (max-width: 1259px) 
     .main 
         .header 
+            height: 84px
             .header-container
                 justify-content: space-between
                 padding: 0 60px
                 width: calc( 100% - 120px )
+                .header__logo
+                    img
+                        height: 54px
+                        width: 54px
                 .menu_body
                     position: absolute
                     z-index: 50
-                    left: 100%
+                    right: -100%
                     top: 0
                     height: 100vh
                     max-width: 320px
                     width: 100%
                     background-color: $green-color
+                    transition: .5s
                     .menu__list
                         flex-direction: column
+                        margin-top: 64px
+                        height: calc( 100% - 64px )
+                        overflow-y: auto
+                        padding: 0 20px
+                        .menu__item
+                            height: auto
+                            margin: 0
+                            flex-direction: column
+                            align-items: flex-start
+                            border-top: 1px solid #D9D9D9
+                            &:last-child
+                                border-bottom: 1px solid #D9D9D9
+                            .menu__link
+                                color: $white-color
+                                padding: 12.5px 0
+                                @include adaptiv-font(20, 18)
+                                justify-content: space-between
+                                width: 100%   
+                            .sub__body
+                                position: relative
+                                flex-direction: column
+                                top: auto
+                                width:  auto
+                                background: transparent
+                                box-shadow: none
+                                border: none
+                                transition: .5s
+                                height: 0
+                                padding: 0
+                                .sub__item
+                                    border: none
+                                    .sub__link
+                                        color: $white-color
+                                        &:visited
+                                            color: $white-color
+                            .sow__modal
+                                display: flex
+                                opacity: 1
+                                pointer-events: all
+                                height: auto
+                .menu_body__active
+                    display: block
+                    right: 0 
             .menu-burger
                 display: block
+            .burger__active
+                span
+                    background: transparent 
+                &::before
+                    top: 0
+                    transform: rotate(45deg)
+                    background: $white-color
+                &::after
+                    top: 0
+                    background: $white-color
+                    transform: rotate(-45deg)
         .content
             padding: 0 60px
+            margin-top: 84px
             width: calc( 100% - 120px )
             .school-button 
                 .school-button__left, .school-button__right
@@ -393,7 +486,6 @@ ul
                 .first-block__text 
                     .first-block__left 
                         h2
-                            font-size: 28px
                             font-style: normal
                             font-weight: 600
                             line-height: 36px
@@ -427,9 +519,16 @@ ul
             .header-container
                 padding: 0 15px
                 width: calc( 100% - 30px )
+                .menu_body 
+                    max-width: initial
         .content
             padding: 0 15px
             width: calc( 100% - 30px )
+            .news 
+                .news-body 
+                    .news-bottom 
+                        .news__button
+                            width: 100%
             .school-button 
                 flex-direction: column
                 .school-button__left, .school-button__right
@@ -440,21 +539,29 @@ ul
             .footer-content
                 padding: 24px 15px 32px 15px
                 width: calc( 100% - 30px )
+._pc
+    .main 
+        .header 
+            .header-container 
+                .menu_body 
+                    .menu__list 
+                        .menu__item
+                            &:hover .sub__body
+                                display: block
+                                opacity: 1
+                                pointer-events: all
+                            &:hover .menu__link
+                                color: $green-color
 
-.overlay-active
-    display: block
-    background-color: rgba(0, 0, 0, 0.5)
-.menu_body__active
-    display: block
-    right: 0
-.burger__active
-    span
-        background: transparent 
-    &::before
-        top: 0
-        transform: rotate(45deg)
-        background: $white-color
-    &::after
-        top: 0
-        background: $white-color
-        transform: rotate(-45deg)
+._touch
+    .main 
+        .header 
+            .header-container 
+                .menu_body 
+                    .menu__list 
+                        .menu__link
+                            .menu__item
+                                .sub__body[disable]
+                                    &:hover 
+                                    &:active 
+                                    &:focus 
